@@ -1,0 +1,13 @@
+# Connect to Microsoft Teams
+Connect-MicrosoftTeams
+
+# Get a list of all orphaned teams
+$orphanedTeams = Get-Team | Where-Object { $_.PrimaryOwner -eq $null }
+
+# Loop through each orphaned team and delete
+foreach ($team in $orphanedTeams) {
+    $groupId = $team.GroupId
+    Write-Host "Deleting orphaned Team with Group Id: $groupId"
+    Remove-Team -GroupId $groupId -Confirm:$false
+    Write-Host "Team with Group Id $groupId has been deleted."
+}
